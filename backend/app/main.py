@@ -1,7 +1,12 @@
 from fastapi import FastAPI
 
 from app.database.init_db import init_db
+
 from app.api.ticket_routes import router as ticket_router
+
+from app.api.dashboard_routes import (
+    router as dashboard_router
+)
 
 app = FastAPI(
     title="AI Support Ticket Analyzer",
@@ -16,6 +21,12 @@ app.include_router(
     ticket_router,
     prefix="/tickets",
     tags=["Tickets"]
+)
+
+app.include_router(
+    dashboard_router,
+    prefix="/dashboard",
+    tags=["Dashboard"]
 )
 
 @app.get("/")
