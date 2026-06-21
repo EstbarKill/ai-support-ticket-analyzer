@@ -19,6 +19,10 @@ class GeminiProvider(LLMProvider):
         self.model = genai.GenerativeModel(
             "gemini-2.5-flash"
         )
+        
+    def generate(self, prompt: str) -> str:
+        response = self.model.generate_content(prompt)
+        return response.text
 
     def extract_json(
         self,

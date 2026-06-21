@@ -3,10 +3,8 @@ from fastapi import FastAPI
 from app.database.init_db import init_db
 
 from app.api.ticket_routes import router as ticket_router
-
-from app.api.dashboard_routes import (
-    router as dashboard_router
-)
+from app.api.dashboard_routes import router as dashboard_router
+from app.api.ask_routes import router as ask_routes
 
 app = FastAPI(
     title="AI Support Ticket Analyzer",
@@ -17,16 +15,16 @@ app = FastAPI(
 def startup():
     init_db()
 
+
 app.include_router(
-    ticket_router,
-    prefix="/tickets",
-    tags=["Tickets"]
+    ticket_router
 )
 
 app.include_router(
-    dashboard_router,
-    prefix="/dashboard",
-    tags=["Dashboard"]
+    dashboard_router
+)
+app.include_router(
+    ask_routes
 )
 
 @app.get("/")

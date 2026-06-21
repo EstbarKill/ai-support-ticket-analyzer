@@ -13,8 +13,10 @@ from app.services.csv_import_service import CSVImportService
 
 from app.services.ticket_analysis_service import ( TicketAnalysisService )
 
-router = APIRouter()
-
+router = APIRouter(
+    prefix="/tickets",
+    tags=["Tickets"]
+)
 ## Realizar analisis##
 
 @router.post("/analyze")
@@ -70,7 +72,6 @@ def get_tickets(
     return repository.get_all()
 
 ## Obtener ticket por id ##
-
 @router.get(
     "/{ticket_id}",
     response_model=TicketResponse
@@ -83,6 +84,7 @@ def get_ticket(
     repository = TicketRepository(db)
 
     return repository.get_by_id(ticket_id)
+
 
 ## Importar datos ##
 @router.post("/import")

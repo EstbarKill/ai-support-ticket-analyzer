@@ -38,3 +38,8 @@ Antes de entregrar hacer la migracion del gemini
 
 import google.generativeai as genai <<x>> from google import genai
 pip install google-genai
+
+ash 
+{
+  "question": "What are the SLA rules?"
+}

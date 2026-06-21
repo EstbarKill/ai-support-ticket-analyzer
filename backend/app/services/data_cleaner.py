@@ -1,5 +1,6 @@
 import re
 
+from datetime import datetime
 
 class DataCleaner:
 
@@ -18,6 +19,18 @@ class DataCleaner:
         "p4": "Low",
     }
 
+    STATUS_MAP = {
+        "open": "Open",
+        "opened": "Open",
+
+        "in progress": "In Progress",
+        "in_progress": "In Progress",
+
+        "resolved": "Resolved",
+
+        "closed": "Closed",
+    }
+
     @staticmethod
     def clean_text(value):
 
@@ -31,6 +44,52 @@ class DataCleaner:
 
         return value
 
+    @staticmethod
+    def normalize_status(status):
+
+        if not status:
+            return "Open"
+
+        value = str(status).strip().lower()
+
+        return DataCleaner.STATUS_MAP.get(
+            value,
+            "Open"
+        )
+
+    @staticmethod
+    def is_missing(value):
+
+        if value is None:
+            return True
+
+        value = str(value).strip().lower()
+
+        return value in [
+            "",
+            "null",
+            "none",
+            "nan",
+            "n/a"
+        ]
+
+    @staticmethod
+    def is_valid_date(value):
+
+        if not value:
+            return False
+
+        try:
+
+            datetime.fromisoformat(
+                str(value)
+            )
+
+            return True
+
+        except Exception:
+            return False
+        
     @staticmethod
     def clean_email(email):
 
