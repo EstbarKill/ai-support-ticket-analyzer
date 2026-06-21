@@ -2,6 +2,10 @@ from sqlalchemy.orm import Session
 
 from app.models.ticket import Ticket
 
+from sqlalchemy import exists
+
+from app.models.ticket_analysis import TicketAnalysis
+
 class TicketRepository:
 
     def __init__(self, db: Session):
@@ -31,4 +35,18 @@ class TicketRepository:
             self.db.query(Ticket)
             .filter(Ticket.id == ticket_id)
             .first()
+        )
+    def get_not_analyzed(
+        self,
+        limit: int = 4
+    ):
+        return (
+            self.db.query(Ticket)
+            .filter(
+                ~exists().where(
+                    TicketAnalysis.ticket_id == Ticket.id
+                )
+            )
+            .limit(limit)
+            .all()
         )

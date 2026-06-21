@@ -11,7 +11,50 @@ from app.repositories.ticket_repository import TicketRepository
 
 from app.services.csv_import_service import CSVImportService
 
+from app.services.ticket_analysis_service import ( TicketAnalysisService )
+
 router = APIRouter()
+
+## Realizar analisis##
+
+@router.post("/analyze")
+def analyze_tickets(
+    db: Session = Depends(get_db)
+):
+
+    repository = TicketRepository(db)
+
+    service = TicketAnalysisService(db)
+
+    tickets = repository.get_not_analyzed()
+
+    pending_tickets = []
+
+    processed = 0
+
+    for ticket in tickets:
+
+        result = service.analyze_ticket(
+            ticket
+        )
+
+    if result:
+        processed += 1
+
+    for ticket in pending_tickets:
+
+        result = service.analyze_ticket(
+            ticket
+        )
+
+        if result:
+            processed += 1
+
+    service.commit()
+
+    return {
+        "processed": processed
+    }
 
 ## Listar tickets ##
 @router.get(

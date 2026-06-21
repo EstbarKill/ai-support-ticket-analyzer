@@ -5,6 +5,7 @@ from sqlalchemy import Text
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 
+from sqlalchemy.orm import relationship
 from app.models.base import Base
 
 
@@ -74,4 +75,10 @@ class Ticket(Base):
     ticket_channel: Mapped[str | None] = mapped_column(
         String(100),
         nullable=True
+    )
+
+    analysis = relationship(
+        "TicketAnalysis",
+        back_populates="ticket",
+        uselist=False
     )

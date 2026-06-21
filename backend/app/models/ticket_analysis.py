@@ -5,6 +5,7 @@ from sqlalchemy import String
 from sqlalchemy import Text
 from sqlalchemy import ForeignKey
 from sqlalchemy import DateTime
+from sqlalchemy.orm import relationship
 
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -48,4 +49,9 @@ class TicketAnalysis(Base):
     analyzed_at: Mapped[datetime] = mapped_column(
         DateTime,
         default=datetime.utcnow
+    )
+
+    ticket = relationship(
+        "Ticket",
+        back_populates="analysis"
     )
